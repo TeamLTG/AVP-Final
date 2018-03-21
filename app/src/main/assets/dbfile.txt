@@ -1,0 +1,14 @@
+YYYY-mm-dd
+
+//calendar nuk e ruan ne ate format me aq sa di une.
+// e ruan keshtu. SEC-Min-Hour-DD-MM-YYYY
+//EoTCk, po nuk ka problem, se ne do e ruajme vete, dhe do emarrim vete.ok
+//e leme per thjeshtesi ne rresht te pare, sic eshte tani, dhe ketu poshte
+//mund te mbash shenime cte duash, vetem rreshti i pare do na duhet besoj
+//ok
+/*
+
+
+e leme keshtu me mir
+
+*/
