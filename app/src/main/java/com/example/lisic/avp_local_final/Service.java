@@ -19,7 +19,7 @@ import java.util.Calendar;
 
 public class Service extends IntentService {
 
-    //nje sec se nuk paskam kaluar nje gje me duket
+    //Declaration of variables
 
     private DatePicker datePicker;
 
@@ -66,39 +66,21 @@ public class Service extends IntentService {
         super("Service");
     }
 
-
+//Handler
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
+		//Gets current date on calendar
         INITD = Calendar.getInstance();
 
-        //data si ruhet ketu? Dmth kur vendos user ditelindjen? kur shtyp kutonin?
-        //user vendos ditelindjen dhe pastaj shtyp button qe fillon kte pjesen ketu.
-        //ok mire
+        //Sets selected date on calendar
         day = datePicker.getDayOfMonth();
         month = datePicker.getMonth();
         year = datePicker.getYear();
 
-        writeDbFile();
-
-        //kisha harruar te shtoja keto
-        //ok, te mbaroj kete pjee dhe e probojem. po te them te drejten nuk mendoj se funksionon,
-        //sps duhet qe app te aktivizohet cdo dite, ose te rri i hapur gjate gjithe kohe ne RAM, me sleep qe i ke bere ti per nje dite
-        //por gjiths e shohim
-        //e di qe duhet te qendroje ne ram. e ktheva ne service qe android te mos ta mbylli automatikisht. do shtoj me vone nje kod qe e ndez ne startup, prandaj me duhet data ne file
-        //ok mire, ja ta mbaroj kete pjese dhe besoj se mund ta provojme
-
-        //pjesa 1, ku vendoset data. duhet te shotj nje gej se nuk po e gjej
-
-
         INITD.set(year, month, day);
 
-        //ketu vendoset data, ketu do e ruajme ne nje file
-        //po, e kam lexuar per read/write po ishte nje gje SHUME e gjate
-        ////haha ska gje se e shohim :)
-        //te bej nje txt?
-        //ska gje se po e shoh une. nje sek
-
+       //Assign birthdate on Vaccine numbers
         V1 = INITD;
         V2 = INITD;
         V3 = INITD;
@@ -110,14 +92,8 @@ public class Service extends IntentService {
         V9 = INITD;
         V10 = INITD;
 
-        //ok
-        //nqs cfare ke bere ketu funksionon, mjafton ta ruajme ne nje file sic the, kur vendoset data dhe kaq.
-        //po sbesoj te mjaftoj, e provojme njehere
-        //i thote calendar INITD qe data e sotme eshte data ne date picker
-        //deklarimi eshte private aty lart
-
-        //veprimet per vaksinat jan ketu
-
+        
+//Do date calculations
         V1.add(Calendar.DATE, 62);
         V2.add(Calendar.DATE, 124);
         V3.add(Calendar.DATE, 186);
@@ -129,62 +105,15 @@ public class Service extends IntentService {
         V9.add(Calendar.DATE, 5208);
         V10.add(Calendar.DATE, 7812);}
 
-    //metode per te lexuar file - per te marre daten e ruajtur
-    public static void readDbFile() {
-
-    }
-
-    //metode per te rshkruajtur file = per te ruajtur daten
-    public void writeDbFile() {
-       // TextView textView = (TextView) findViewById(R.id.textView);
-
-        if (MainActivity.dbFile.exists()) {
-            try {
-                FileOutputStream fo = new FileOutputStream(MainActivity.dbFile);
-
-                INITD = Calendar.getInstance();
-                day = datePicker.getDayOfMonth();
-                month = datePicker.getMonth();
-                year = datePicker.getYear();
-
-                String data = year + "-" + month + "-" + day;
-
-                byte[] contentInBytes = data.getBytes();
-
-                fo.write(contentInBytes);
-                fo.flush();
-                fo.close();
-
-            } catch (IOException e) {
-                //textView.setText("ERROR: DB File nuk u gjet!");
-                System.out.println("ERROR: DB File nuk u gjet!");
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                MainActivity.dbFile.createNewFile();
-                //textView.setText("DB File u krijua ne kujtesen e smartphonit.");
-                System.out.println("DB File u krijua ne kujtesen e smartphonit.");
-            } catch (IOException e) {
-                System.out.println("ERROR: DB File nuk mund te krijohet ne kujtesen e smartphonit!");
-                //textView.setText("ERROR: DB File nuk mund te krijohet ne kujtesen e smartphonit!");
-            }
-        }
-    }
+    //Vaccine methods begin here
+   
+   
 
     private void vacc1() {
 
-        Calendar caltest = Calendar.getInstance(); //kjo do jete data e ruajtur ne file??
+        Calendar caltest = Calendar.getInstance(); 
 
-        // po i jap run ne cel tamam dhe po te them cfare thot ok
-
-        //direkt pa shtyper gje thot ERROR: DB File nuk mund te krijohet ne kujtesen e telefonit
-        //do kete probleme me permission atehere, nje sek
-
-        //po si ka mundesi se ne nuk i dhame butonit. apo nga if tek main
-        //po do krijohet menjehere ajo, pa shtypur butonin. kjo eshte ideja. qe ta krijoje file ne fillim, dhe pastaj te kontrllohet
-        //pk por ERROR: DB File nuk mund te krijohet ne kujtesen e smartphonit! eshte ne service dhe service start kur shtyp buttonin. kjo doli pa shtypur gje
-        //eshte edhe ne main, ky error.
+        
 
         if (caltest == V1) {
             NotificationCompat.Builder notifier = new NotificationCompat.Builder(Service.this)
@@ -241,19 +170,7 @@ public class Service extends IntentService {
 
     }
 
-    //pse jane gjithe keto metoda, kalendare?
-    //cdo metode eshte nje vaksine. kalendari merr diten e tanishme dhe e krahason me daten e vaksines. nqs jane = ben notification dhe kalon tek e dyta, nqs jo pret 24 ore dhe fillon prap
-    //funksionon , e ke provuar, nqs e vendos daten direkt ketu, jo ne file?
-    //punon po, vetem duhet ruajtur qe mbas restart ta dije. me nje if: if file == full (nis servis) else (wait for date pick)
-    //restart te app apo gjithe telefonit?
-    //te dyja njesoj jane besoj. prap se prap do fshihet nga RAM
-    //Ok,  beje njehere run app ta shoh.
-    //Tani nis servisi dhe pret.
-    //dmth ti vetem vendos daten ne fillim?
-    //po, vendos daten qe caktohet ne nje variable dhe pastaj punohet mbi te per te gjetur daten e vaksines
-    //
-
-    //ok, ku eshte ky variabli?
+    
     private void vacc3() {
 
         Calendar caltest = Calendar.getInstance();
